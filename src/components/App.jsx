@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
 
-import ContactList from './contactList/contactList';
-import ContactForm from './contactForm/contactForm';
-import Filter from './filter/filter';
+import ContactList from './contactList/ContactList';
+import ContactForm from './contactForm/ContactForm';
+import Filter from './filter/Filter';
 
-import style from './App.module.css';
+import style from './app.module.css';
 
 const App = () => {
   const filtered = useSelector(state => state.filter);

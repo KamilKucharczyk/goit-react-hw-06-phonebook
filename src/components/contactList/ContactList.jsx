@@ -1,10 +1,10 @@
 import { useDispatch } from 'react-redux';
 import { remove } from 'redux/sliceContact';
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import css from './contactList.module.css';
 
-const Contacts = ({ listContact }) => {
+const ContactList = ({ listContact }) => {
   const dispatch = useDispatch();
   return listContact.map(contact => {
     return (
@@ -25,7 +25,7 @@ const Contacts = ({ listContact }) => {
   });
 };
 
-export default Contacts;
+export default ContactList;
 
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.object),

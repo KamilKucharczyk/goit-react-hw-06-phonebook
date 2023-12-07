@@ -1,37 +1,31 @@
+import { useDispatch } from 'react-redux';
+import { remove } from 'redux/sliceContact';
 import React from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+
 import css from './contactList.module.css';
 
-import {
-  selectContactsError,
-  selectContactsIsLoading,
-  selectGetContacts,
-  selectGetFilter,
-} from 'redux/selectors';
-
-export const ContactList = () => {
-  const contacts = useSelector(selectGetContacts);
-  const filter = useSelector(selectGetFilter);
-  const isLoading = useSelector(selectContactsIsLoading);
-  const error = useSelector(selectContactsError);
-
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  return (
-    <ul>
-      {isLoading && !error && <p>Loading...</p>}
-      {filteredContacts.map(contact => (
-        <Contacts key={contact.id} contact={contact} />
-      ))}
-      <button className={css.delButton} onClick={() => onDelete(contacts.id)}>
-        Delete contact
-      </button>
-    </ul>
-  );
+const Contacts = ({ listContact }) => {
+  const dispatch = useDispatch();
+  return listContact.map(contact => {
+    return (
+      <ul className={css.list} key={contact.id}>
+        <li className={css.contact} key={contact.id}>
+          {contact.name} - {contact.number}
+          <button
+            className={css.delButton}
+            onClick={() => {
+              dispatch(remove(contact.id));
+            }}
+          >
+            Delete
+          </button>
+        </li>
+      </ul>
+    );
+  });
 };
+
+export default Contacts;
 
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.object),

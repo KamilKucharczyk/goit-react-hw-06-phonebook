@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { query } from 'redux/sliceFilter';
-import PropTypes from 'prop-types';
+import { qwery } from 'redux/sliceFilter';
+
 import css from './filter.module.css';
 
 const Filter = () => {
@@ -9,13 +9,12 @@ const Filter = () => {
   const dispatch = useDispatch();
 
   const handleInputChange = evt => {
-    dispatch(query(evt.currentTarget.value));
+    dispatch(qwery(evt.currentTarget.value));
   };
 
   return (
     <div className={css.filter}>
       <label className={css.label}>
-        Find Contacts By Name
         <input
           className={css.input}
           type="text"

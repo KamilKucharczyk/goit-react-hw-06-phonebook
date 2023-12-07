@@ -1,64 +1,86 @@
 import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import { nanoid } from 'nanoid';
+import { add } from 'redux/sliceContact';
+import { useState } from 'react';
 
-import { addContact } from 'redux/operations';
-import { selectGetContacts } from 'redux/selectors';
+import PropTypes from 'prop-types';
 
 import css from './contactForm.module.css';
 
 export const ContactForm = () => {
-  const contacts = useSelector(selectGetContacts);
   const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    const name = e.target.elements.name.value;
-    const number = e.target.elements.number.value;
-    const id = nanoid();
-
-    if (!name || !number) {
-      alert('Name and number cannot be empty.');
-      return;
-    }
-
-    const newContact = { name, number, id };
-    dispatch(addContact(newContact));
-
-    e.target.reset();
+  const handleChange = evt => {
+    const { name, value } = evt.target;
+    name === 'name' ? setName(value) : setNumber(value);
   };
-
+  const reset = () => {
+    setName('');
+    setNumber('');
+  };
+  const contacts = useSelector(state => state.contacts);
   return (
-    <form onSubmit={handleSubmit} className={css.form}>
-      <label className={css.label}>
-        <h2 className={css.title}>Name:</h2>
+    <div className={css.wrapper}>
+      <h2>Add Contact</h2>
+      <form
+        className={css.submit}
+        onSubmit={e => {
+          e.preventDefault();
+          if (
+            contacts.some(
+              value =>
+                value.name.toLocaleLowerCase() === name.toLocaleLowerCase()
+            )
+          ) {
+            alert(`${name} is alredy in contacts`);
+          } else {
+            dispatch(add({ name, number }));
+          }
+          reset();
+        }}
+      >
         <input
+          className={css.input}
           type="text"
           name="name"
-          className={css.input}
-          value={contacts.name}
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          placeholder="Name"
+          value={name}
+          onChange={handleChange}
           required
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
         />
-        <h2 className={css.title}>Number:</h2>
         <input
+          className={css.input}
           type="tel"
           name="number"
-          className={css.input}
-          value={contacts.number}
+          placeholder="Phone Number"
+          value={number}
+          onChange={handleChange}
+          required
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
         />
-      </label>
-      <button type="submit" className={css.addContact}>
-        Add Contact
-      </button>
-    </form>
+        <div>
+          <button className={css.btnAfter} type="submit">
+            ADD CONTACT
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 
 ContactForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
+ContactForm.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+    })
+  ),
+};
+export default ContactForm;

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import css from './contactList.module.css';
 
-import { Contacts } from 'components/contacts/Contacts';
 import {
   selectContactsError,
   selectContactsIsLoading,

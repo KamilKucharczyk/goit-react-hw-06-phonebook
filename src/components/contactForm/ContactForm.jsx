@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { add } from 'redux/sliceContact';
+import { add } from '../../redux/sliceContact';
 import { useState } from 'react';
 
 import PropTypes from 'prop-types';

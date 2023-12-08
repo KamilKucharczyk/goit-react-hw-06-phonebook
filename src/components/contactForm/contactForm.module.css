@@ -50,7 +50,7 @@ input::placeholder:focus {
 }
 .btnAfter::after {
   content: '';
-  background-color: #ffe54c;
+  background-color: yellow;
   width: 100%;
   z-index: -1;
   position: absolute;
